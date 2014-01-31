@@ -2,6 +2,7 @@ package org.k13n.swtstubber.indexing;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ClassIndex {
   private Map<String, byte[]> index;
@@ -19,6 +20,10 @@ public class ClassIndex {
     if (!index.containsKey(className))
       throw new RuntimeException("Class definition not found");
     return index.get(className);
+  }
+
+  public Set<String> keys() {
+    return index.keySet();
   }
 
 }
