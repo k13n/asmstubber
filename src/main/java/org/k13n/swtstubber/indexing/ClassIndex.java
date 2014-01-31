@@ -18,7 +18,7 @@ public class ClassIndex {
 
   public byte[] getBytecode(String className) {
     if (!index.containsKey(className))
-      throw new RuntimeException("Class definition not found");
+      throw new RuntimeException("Class definition not found for " + className);
     return index.get(className);
   }
 
