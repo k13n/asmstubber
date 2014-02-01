@@ -39,8 +39,8 @@ public class MethodVisitor extends org.objectweb.asm.MethodVisitor {
     String className = internalName(owner);
     if (isComplexType(className)) {
       if (swtMatcher.matches(className)) {
-        Method method = new Method(name, typeDescriptor, className, opcode);
-        swtMatcher.registerMethod(method);
+        Method method = new Method(name, typeDescriptor, opcode);
+        swtMatcher.registerMethod(className, method);
       } else {
         explorer.markForExploration(className);
       }

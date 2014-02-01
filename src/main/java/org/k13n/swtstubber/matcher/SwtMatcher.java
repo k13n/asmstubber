@@ -23,8 +23,7 @@ public class SwtMatcher {
     return false;
   }
 
-  public void registerMethod(Method method) {
-    String className = method.getClassName();
+  public void registerMethod(String className, Method method) {
     if (isSwtClass(className))
       getMethodsOfClass(className).add(method);
   }
@@ -45,9 +44,10 @@ public class SwtMatcher {
   }
 
   public void dump() {
-    for (Set<Method> classMethods : methods.values()) {
-      for (Method method : classMethods)
-        System.out.println(method);
+    for (Map.Entry<String, Set<Method>> entry : methods.entrySet()) {
+      System.out.println(entry.getKey());
+      for (Method method : entry.getValue())
+        System.out.println("  " + method);
       System.out.println();
     }
   }
