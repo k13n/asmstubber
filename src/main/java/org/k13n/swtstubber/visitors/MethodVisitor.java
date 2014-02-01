@@ -1,5 +1,6 @@
 package org.k13n.swtstubber.visitors;
 
+import org.k13n.swtstubber.matcher.Method;
 import org.k13n.swtstubber.matcher.SwtMatcher;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
@@ -30,6 +31,20 @@ public class MethodVisitor extends org.objectweb.asm.MethodVisitor {
   public void visitLocalVariable(String name, String typeDescriptor,
       String signature, Label start, Label end, int index) {
     exploreTypeDescriptor(typeDescriptor);
+  }
+
+  @Override
+  public void visitMethodInsn(int opcode, String owner, String name,
+      String typeDescriptor) {
+    String className = internalName(owner);
+    if (isComplexType(className)) {
+      if (swtMatcher.matches(className)) {
+        Method method = new Method(name, typeDescriptor, className, opcode);
+        swtMatcher.registerMethod(method);
+      } else {
+        explorer.markForExploration(className);
+      }
+    }
   }
 
   private void exploreTypeDescriptor(String typeDescriptor) {
