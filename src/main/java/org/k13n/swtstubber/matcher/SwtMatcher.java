@@ -1,13 +1,13 @@
 package org.k13n.swtstubber.matcher;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SwtMatcher {
-  private final List<String> swtClasses;
+  private final Set<String> swtClasses;
 
   public SwtMatcher() {
-    swtClasses = new ArrayList<String>();
+    swtClasses = new HashSet<String>();
   }
 
   public boolean matches(String className) {
@@ -20,7 +20,8 @@ public class SwtMatcher {
   }
 
   public boolean isSwtClass(String className) {
-    return className.startsWith("org/eclipse/swt");
+    return className.startsWith("org/eclipse/swt") &&
+      !className.startsWith("org/eclipse/swt/internal");
   }
 
   public void dump() {

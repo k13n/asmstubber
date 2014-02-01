@@ -19,7 +19,7 @@ public class ClassVisitor extends org.objectweb.asm.ClassVisitor {
       String superName, String[] interfaces) {
     this.className = name;
     if (!swtMatcher.matches(superName))
-      explore(superName);
+      explorer.markForExploration(superName);
     if (interfaces != null)
       visitInterfaces(interfaces);
   }
@@ -27,32 +27,27 @@ public class ClassVisitor extends org.objectweb.asm.ClassVisitor {
   private void visitInterfaces(String[] interfaces) {
     for (String classInterface : interfaces) {
       if (!swtMatcher.matches(classInterface))
-        explore(classInterface);
+        explorer.markForExploration(classInterface);
     }
   }
 
   @Override
   public void visitOuterClass(String owner, String name, String desc) {
     if (!swtMatcher.matches(owner))
-      explore(owner);
+      explorer.markForExploration(owner);
   }
 
   @Override
   public void visitInnerClass(String name, String outerName,
       String innerName, int access) {
     if (!swtMatcher.matches(name))
-      explore(name);
+      explorer.markForExploration(name);
   }
 
   @Override
   public MethodVisitor visitMethod(int access, String name, String desc,
       String signature, String[] exceptions) {
-    return new MethodVisitor(className, swtMatcher);
-  }
-
-  private void explore(String className) {
-    if (!className.startsWith("java/") && !className.startsWith("javax/"))
-      explorer.markForExploration(className);
+    return new MethodVisitor(explorer, swtMatcher);
   }
 
 }

@@ -13,27 +13,26 @@ public class ClassExplorer {
   private final ClassIndex index;
   private final SwtMatcher swtMatcher;
   private final Queue<String> classQueue;
-  private final Set<String> exlporedClasses;
+  private final Set<String> exploredClasses;
 
   public ClassExplorer(ClassIndex index, SwtMatcher swtMatcher) {
     this.index = index;
     this.swtMatcher = swtMatcher;
     classQueue = new LinkedList<String>();
-    exlporedClasses = new HashSet<String>();
+    exploredClasses = new HashSet<String>();
   }
 
   public ClassExplorer(ClassIndex index, SwtMatcher swtMatcher,
       Set<String> seed) {
     this(index, swtMatcher);
     for (String className : seed)
-      classQueue.add(className);
+      markForExploration(className);
   }
 
   public void explore() {
     while (!classQueue.isEmpty()) {
       String className = classQueue.poll();
       visitClass(className);
-      markAsExplored(className);
     }
   }
 
@@ -50,12 +49,11 @@ public class ClassExplorer {
   }
 
   public void markForExploration(String className) {
-    if (!exlporedClasses.contains(className))
+    if (!className.startsWith("java/") && !className.startsWith("javax/") &&
+        !exploredClasses.contains(className)) {
+      exploredClasses.add(className);
       classQueue.add(className);
-  }
-
-  private void markAsExplored(String className) {
-    exlporedClasses.add(className);
+    }
   }
 
 }
