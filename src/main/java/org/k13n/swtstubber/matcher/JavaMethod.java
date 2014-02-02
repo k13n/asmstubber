@@ -1,11 +1,12 @@
 package org.k13n.swtstubber.matcher;
 
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.commons.Method;
 
-public class Method extends org.objectweb.asm.commons.Method {
+public class JavaMethod extends Method {
   private final int opcode;
 
-  public Method(String name, String typeDescriptor, int opcode) {
+  public JavaMethod(String name, String typeDescriptor, int opcode) {
     super(name, typeDescriptor);
     this.opcode = opcode;
   }
@@ -24,8 +25,8 @@ public class Method extends org.objectweb.asm.commons.Method {
 
   @Override
   public boolean equals(Object other) {
-    if (other != null && other instanceof Method)
-      return ((Method) other).opcode == opcode;
+    if (other != null && other instanceof JavaMethod)
+      return ((JavaMethod) other).opcode == opcode;
     return false;
   }
 

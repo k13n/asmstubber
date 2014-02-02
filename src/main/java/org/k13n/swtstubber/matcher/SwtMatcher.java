@@ -7,11 +7,11 @@ import java.util.Set;
 
 public class SwtMatcher {
   private final Set<String> swtClasses;
-  private final Map<String, Set<Method>> methods;
+  private final Map<String, Set<JavaMethod>> methods;
 
   public SwtMatcher() {
     swtClasses = new HashSet<String>();
-    methods = new HashMap<String, Set<Method>>();
+    methods = new HashMap<String, Set<JavaMethod>>();
   }
 
   public boolean matches(String className) {
@@ -23,15 +23,15 @@ public class SwtMatcher {
     return false;
   }
 
-  public void registerMethod(String className, Method method) {
+  public void registerMethod(String className, JavaMethod method) {
     if (isSwtClass(className))
       getMethodsOfClass(className).add(method);
   }
 
-  private Set<Method> getMethodsOfClass(String className) {
-    Set<Method> classMethods;
+  private Set<JavaMethod> getMethodsOfClass(String className) {
+    Set<JavaMethod> classMethods;
     if (!methods.containsKey(className)) {
-      classMethods = new HashSet<Method>();
+      classMethods = new HashSet<JavaMethod>();
       methods.put(className, classMethods);
     } else
       classMethods = methods.get(className);
@@ -44,9 +44,9 @@ public class SwtMatcher {
   }
 
   public void dump() {
-    for (Map.Entry<String, Set<Method>> entry : methods.entrySet()) {
+    for (Map.Entry<String, Set<JavaMethod>> entry : methods.entrySet()) {
       System.out.println(entry.getKey());
-      for (Method method : entry.getValue())
+      for (JavaMethod method : entry.getValue())
         System.out.println("  " + method);
       System.out.println();
     }

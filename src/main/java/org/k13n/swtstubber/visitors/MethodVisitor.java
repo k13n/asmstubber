@@ -1,6 +1,6 @@
 package org.k13n.swtstubber.visitors;
 
-import org.k13n.swtstubber.matcher.Method;
+import org.k13n.swtstubber.matcher.JavaMethod;
 import org.k13n.swtstubber.matcher.SwtMatcher;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
@@ -39,7 +39,7 @@ public class MethodVisitor extends org.objectweb.asm.MethodVisitor {
     String className = internalName(owner);
     if (isComplexType(className)) {
       if (swtMatcher.matches(className)) {
-        Method method = new Method(name, typeDescriptor, opcode);
+        JavaMethod method = new JavaMethod(name, typeDescriptor, opcode);
         swtMatcher.registerMethod(className, method);
       } else {
         explorer.markForExploration(className);
