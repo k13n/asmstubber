@@ -39,7 +39,7 @@ public class CodeAssist {
   private static String getObjectJavaType(Type type) {
     String descriptor = type.getDescriptor();
     descriptor = descriptor.substring(1, descriptor.length() - 1);
-    return descriptor.replace('/', '.');
+    return descriptor.replace('/', '.').replace('$', '.');
   }
 
   public static String neutralValue(String type) {

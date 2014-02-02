@@ -67,6 +67,11 @@ public class CodeAssistTest {
     assertTypeMatches("java.lang.String[][]", "[[Ljava/lang/String;");
   }
 
+  @Test
+  public void testNestedClass() {
+    assertTypeMatches("java.lang.String.Foo", "Ljava/lang/String$Foo;");
+  }
+
   private static void assertTypeMatches(String realType,
       String typeDescriptor) {
     Type type = Type.getType(typeDescriptor);
