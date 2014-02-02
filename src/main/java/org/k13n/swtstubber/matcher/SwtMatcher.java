@@ -1,5 +1,6 @@
 package org.k13n.swtstubber.matcher;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -117,6 +118,10 @@ public class SwtMatcher {
       System.out.println(indent + "  " + method);
     for (JavaClass innerClass : javaClass.getInnerClasses())
       dumpClass(innerClass, indent + "  ");
+  }
+
+  public Collection<JavaClass> getClasses() {
+    return swtClasses.values();
   }
 
 }
