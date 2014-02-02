@@ -11,21 +11,27 @@ public class SwtMatcher {
   }
 
   public boolean matches(String className) {
-    if (isSwtClass(className)) {
-      if (isInnerClass(className)) {
-        if (isValidInnerClass(className)) {
-          JavaClass outer = getJavaClass(outerClass(className));
-          JavaClass inner = new JavaClass(className, innerClass(className));
-          outer.addInnerClass(inner);
-          return true;
-        }
-        return false;
-      } else if (!swtClasses.containsKey(className)) {
-        swtClasses.put(className, new JavaClass(className));
-        return true;
-      }
-    }
-    return false;
+    if (!isSwtClass(className))
+      return false;
+    else if (isInnerClass(className))
+      return matchInnerClass(className);
+    else
+      return matchNormalClass(className);
+  }
+
+  private boolean matchInnerClass(String className) {
+    if (!isValidInnerClass(className))
+      return false;
+    JavaClass outer = getJavaClass(outerClass(className));
+    JavaClass inner = new JavaClass(className, innerClass(className));
+    outer.addInnerClass(inner);
+    return true;
+  }
+
+  private boolean matchNormalClass(String className) {
+    if (!swtClasses.containsKey(className))
+      swtClasses.put(className, new JavaClass(className));
+    return true;
   }
 
   public void registerMethod(String className, JavaMethod method) {
@@ -39,25 +45,33 @@ public class SwtMatcher {
   }
 
   private JavaClass getJavaClass(String className) {
-    if (isInnerClass(className)) {
-      if (!isValidInnerClass(className)) {
-        String msg = "class " + className + " is not a valid inner class";
-        throw new RuntimeException(msg);
-      }
-      JavaClass outer = getJavaClass(outerClass(className));
-      for (JavaClass inner : outer.getInnerClasses()) {
-        if (inner.getClassName().equals(innerClass(className)))
-          return inner;
-      }
+    if (isInnerClass(className))
+      return getInnerJavaClass(className);
+    else
+      return getNormalClass(className);
+  }
+
+  private JavaClass getInnerJavaClass(String className) {
+    if (!isValidInnerClass(className)) {
+      String msg = "class " + className + " is not a valid inner class";
+      throw new RuntimeException(msg);
+    }
+    String innerClass = innerClass(className);
+    JavaClass outer = getJavaClass(outerClass(className));
+    for (JavaClass inner : outer.getInnerClasses()) {
+      if (inner.getClassName().equals(innerClass))
+        return inner;
+    }
+    String msg = "class " + className + " was not yet indexed";
+    throw new RuntimeException(msg);
+  }
+
+  private JavaClass getNormalClass(String className) {
+    if (!swtClasses.containsKey(className)) {
       String msg = "class " + className + " was not yet indexed";
       throw new RuntimeException(msg);
-    } else {
-      if (!swtClasses.containsKey(className)) {
-        String msg = "class " + className + " was not yet indexed";
-        throw new RuntimeException(msg);
-      }
-      return swtClasses.get(className);
     }
+    return swtClasses.get(className);
   }
 
   public boolean isSwtClass(String className) {
