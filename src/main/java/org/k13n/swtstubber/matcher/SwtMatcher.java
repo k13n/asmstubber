@@ -1,41 +1,43 @@
 package org.k13n.swtstubber.matcher;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class SwtMatcher {
-  private final Set<String> swtClasses;
-  private final Map<String, Set<JavaMethod>> methods;
+  private final Map<String, JavaClass> swtClasses;
 
   public SwtMatcher() {
-    swtClasses = new HashSet<String>();
-    methods = new HashMap<String, Set<JavaMethod>>();
+    swtClasses = new HashMap<String, JavaClass>();
   }
 
   public boolean matches(String className) {
     if (isSwtClass(className)) {
-      if (!swtClasses.contains(className))
-        swtClasses.add(className);
+      if (!swtClasses.containsKey(className))
+        swtClasses.put(className, new JavaClass(className));
       return true;
     }
     return false;
   }
 
   public void registerMethod(String className, JavaMethod method) {
-    if (isSwtClass(className))
-      getMethodsOfClass(className).add(method);
+    if (isSwtClass(className)) {
+      JavaClass javaClass = getJavaClass(className);
+      if (method.isConstructor())
+        javaClass.addConstructor(method);
+      else
+        javaClass.addMethod(method);
+    }
   }
 
-  private Set<JavaMethod> getMethodsOfClass(String className) {
-    Set<JavaMethod> classMethods;
-    if (!methods.containsKey(className)) {
-      classMethods = new HashSet<JavaMethod>();
-      methods.put(className, classMethods);
-    } else
-      classMethods = methods.get(className);
-    return classMethods;
+  private JavaClass getJavaClass(String className) {
+    JavaClass javaClass;
+    if (!swtClasses.containsKey(className)) {
+      javaClass = new JavaClass(className);
+      swtClasses.put(className, javaClass);
+    } else {
+      javaClass = swtClasses.get(className);
+    }
+    return javaClass;
   }
 
   public boolean isSwtClass(String className) {
@@ -44,9 +46,11 @@ public class SwtMatcher {
   }
 
   public void dump() {
-    for (Map.Entry<String, Set<JavaMethod>> entry : methods.entrySet()) {
-      System.out.println(entry.getKey());
-      for (JavaMethod method : entry.getValue())
+    for (JavaClass javaClass : swtClasses.values()) {
+      System.out.println(javaClass);
+      for (JavaMethod constructor : javaClass.getConstructors())
+        System.out.println("  " + constructor);
+      for (JavaMethod method : javaClass.getMethods())
         System.out.println("  " + method);
       System.out.println();
     }
