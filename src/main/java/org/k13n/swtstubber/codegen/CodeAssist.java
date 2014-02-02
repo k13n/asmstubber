@@ -42,4 +42,25 @@ public class CodeAssist {
     return descriptor.replace('/', '.');
   }
 
+  public static String neutralValue(String type) {
+    return neutralValue(Type.getType(type));
+  }
+
+  public static String neutralValue(Type type) {
+    switch (type.getSort()) {
+      case Type.BOOLEAN: return "false";
+      case Type.BYTE:    return "0";
+      case Type.CHAR:    return "'\u0000'";
+      case Type.DOUBLE:  return "0.0d";
+      case Type.FLOAT:   return "0.0f";
+      case Type.INT:     return "0";
+      case Type.LONG:    return "0L";
+      case Type.SHORT:   return "0";
+      case Type.VOID:    return "";
+      case Type.ARRAY:   return "null";
+      case Type.OBJECT:  return "null";
+    }
+    throw new AssertionError("impossible");
+  }
+
 }
