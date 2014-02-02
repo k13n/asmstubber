@@ -26,15 +26,22 @@ public class JavaMethod extends Method {
   @Override
   public boolean equals(Object other) {
     if (other != null && other instanceof JavaMethod)
-      return ((JavaMethod) other).opcode == opcode;
+      return equals((JavaMethod) other);
     return false;
+  }
+
+  public boolean equals(JavaMethod other) {
+    return super.equals(other) &&
+      isStatic() == other.isStatic() &&
+      isConstructor() == other.isConstructor();
   }
 
   @Override
   public int hashCode() {
     int result = 3489;
     result = 31 * result + super.hashCode();
-    result = 31 * result + opcode;
+    result = 31 * result + (isStatic() ? 1 : 0);
+    result = 31 * result + (isConstructor() ? 1 : 0);
     return result;
   }
 
