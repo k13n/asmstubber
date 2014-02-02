@@ -76,8 +76,7 @@ public class SwtMatcher {
   }
 
   public boolean isSwtClass(String className) {
-    return className.startsWith("org/eclipse/swt") &&
-      !className.startsWith("org/eclipse/swt/internal");
+    return className.startsWith("org/eclipse/swt");
   }
 
   private boolean isInnerClass(String className) {
