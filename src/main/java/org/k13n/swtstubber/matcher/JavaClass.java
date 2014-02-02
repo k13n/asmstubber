@@ -12,21 +12,25 @@ public class JavaClass {
   private final Set<JavaMethod> methods;
   private final Set<JavaClass> innerClasses;
 
-  public JavaClass(String internalName) {
+  public JavaClass(String internalName, String className) {
     this.internalName = internalName;
-    className = className(internalName);
+    this.className = className;
     packageName = packageName(internalName);
     constructors = new HashSet<JavaMethod>();
     methods = new HashSet<JavaMethod>();
     innerClasses = new HashSet<JavaClass>();
   }
 
-  private String className(String internalName) {
+  public JavaClass(String internalName) {
+    this(internalName, className(internalName));
+  }
+
+  private static String className(String internalName) {
     int separatorPos = internalName.lastIndexOf("/");
     return internalName.substring(separatorPos + 1, internalName.length());
   }
 
-  private String packageName(String internalName) {
+  private static String packageName(String internalName) {
     int separatorPos = internalName.lastIndexOf("/");
     String packageName = internalName.substring(0, separatorPos);
     return packageName.replace('/', '.');

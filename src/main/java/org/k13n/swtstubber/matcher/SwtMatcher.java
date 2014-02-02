@@ -12,9 +12,18 @@ public class SwtMatcher {
 
   public boolean matches(String className) {
     if (isSwtClass(className)) {
-      if (!swtClasses.containsKey(className))
+      if (isInnerClass(className)) {
+        if (isValidInnerClass(className)) {
+          JavaClass outer = getJavaClass(outerClass(className));
+          JavaClass inner = new JavaClass(className, innerClass(className));
+          outer.addInnerClass(inner);
+          return true;
+        }
+        return false;
+      } else if (!swtClasses.containsKey(className)) {
         swtClasses.put(className, new JavaClass(className));
-      return true;
+        return true;
+      }
     }
     return false;
   }
@@ -30,14 +39,25 @@ public class SwtMatcher {
   }
 
   private JavaClass getJavaClass(String className) {
-    JavaClass javaClass;
-    if (!swtClasses.containsKey(className)) {
-      javaClass = new JavaClass(className);
-      swtClasses.put(className, javaClass);
+    if (isInnerClass(className)) {
+      if (!isValidInnerClass(className)) {
+        String msg = "class " + className + " is not a valid inner class";
+        throw new RuntimeException(msg);
+      }
+      JavaClass outer = getJavaClass(outerClass(className));
+      for (JavaClass inner : outer.getInnerClasses()) {
+        if (inner.getClassName().equals(innerClass(className)))
+          return inner;
+      }
+      String msg = "class " + className + " was not yet indexed";
+      throw new RuntimeException(msg);
     } else {
-      javaClass = swtClasses.get(className);
+      if (!swtClasses.containsKey(className)) {
+        String msg = "class " + className + " was not yet indexed";
+        throw new RuntimeException(msg);
+      }
+      return swtClasses.get(className);
     }
-    return javaClass;
   }
 
   public boolean isSwtClass(String className) {
@@ -45,15 +65,44 @@ public class SwtMatcher {
       !className.startsWith("org/eclipse/swt/internal");
   }
 
+  private boolean isInnerClass(String className) {
+    return className.indexOf('$') >= 0;
+  }
+
+  private boolean isValidInnerClass(String className) {
+    // avoid classes like org/eclipse/swt/custom/TreeEditor$3
+    int pos = className.indexOf('$');
+    char digit = className.charAt(pos + 1);
+    return !(digit >= '0' && digit <= '9');
+  }
+
+  private String outerClass(String className) {
+    int pos = className.indexOf('$');
+    if (pos == -1)
+      return className;
+    else
+      return className.substring(0, pos);
+  }
+
+  private String innerClass(String className) {
+    return className.substring(className.indexOf('$') + 1, className.length());
+  }
+
   public void dump() {
     for (JavaClass javaClass : swtClasses.values()) {
-      System.out.println(javaClass);
-      for (JavaMethod constructor : javaClass.getConstructors())
-        System.out.println("  " + constructor);
-      for (JavaMethod method : javaClass.getMethods())
-        System.out.println("  " + method);
+      dumpClass(javaClass, "");
       System.out.println();
     }
+  }
+
+  private void dumpClass(JavaClass javaClass, String indent) {
+    System.out.println(indent + javaClass);
+    for (JavaMethod constructor : javaClass.getConstructors())
+      System.out.println(indent + "  " + constructor);
+    for (JavaMethod method : javaClass.getMethods())
+      System.out.println(indent + "  " + method);
+    for (JavaClass innerClass : javaClass.getInnerClasses())
+      dumpClass(innerClass, indent + "  ");
   }
 
 }
