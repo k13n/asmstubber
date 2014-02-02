@@ -40,13 +40,10 @@ public class SourceCodeGenerator {
 
   private String createPackageHierarchy(String packageName) {
     String path = targetDirectory;
-    System.out.println(packageName);
     for (String folder : packageName.split("\\.")) {
       path = path + File.separator + folder;
-      System.out.println(path);
       createDirectoryIfNotExists(path);
     }
-    System.out.println("created: "+path);
     return path;
   }
 
