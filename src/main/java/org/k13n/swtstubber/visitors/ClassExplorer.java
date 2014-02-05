@@ -1,32 +1,19 @@
 package org.k13n.swtstubber.visitors;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Set;
 
 import org.k13n.swtstubber.indexing.ClassIndex;
-import org.k13n.swtstubber.matcher.SwtMatcher;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 
 public class ClassExplorer {
   private final ClassIndex index;
-  private final SwtMatcher swtMatcher;
   private final Queue<String> classQueue;
-  private final Set<String> exploredClasses;
 
-  public ClassExplorer(ClassIndex index, SwtMatcher swtMatcher) {
+  public ClassExplorer(ClassIndex index) {
     this.index = index;
-    this.swtMatcher = swtMatcher;
     classQueue = new LinkedList<String>();
-    exploredClasses = new HashSet<String>();
-  }
-
-  public ClassExplorer(ClassIndex index, SwtMatcher swtMatcher,
-      Set<String> seed) {
-    this(index, swtMatcher);
-    for (String className : seed)
-      markForExploration(className);
   }
 
   public void explore() {
@@ -40,19 +27,12 @@ public class ClassExplorer {
     try {
       byte[] bytecode = index.getBytecode(className);
       ClassReader reader = new ClassReader(bytecode);
-      ClassVisitor visitor = new ClassVisitor(this, swtMatcher);
+      ClassWriter writer = new ClassWriter(0);
+      SwtClassVisitor visitor = new SwtClassVisitor(writer);
       reader.accept(visitor, 0);
     } catch (RuntimeException e) {
       // FIXME
       System.out.println(e.getMessage());
-    }
-  }
-
-  public void markForExploration(String className) {
-    if (!className.startsWith("java/") && !className.startsWith("javax/") &&
-        !exploredClasses.contains(className)) {
-      exploredClasses.add(className);
-      classQueue.add(className);
     }
   }
 
