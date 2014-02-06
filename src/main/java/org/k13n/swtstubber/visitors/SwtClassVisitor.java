@@ -1,5 +1,6 @@
 package org.k13n.swtstubber.visitors;
 
+import org.k13n.swtstubber.codegen.EmptyMethodFactory;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -15,6 +16,9 @@ public class SwtClassVisitor extends ClassVisitor {
   @Override
   public MethodVisitor visitMethod(int access, String name, String desc,
       String signature, String[] exceptions) {
+    MethodVisitor method = visitor.visitMethod(access, name, desc,
+        signature, exceptions);
+    EmptyMethodFactory.createMethod(desc).generate(method);
     return null;
   }
 
