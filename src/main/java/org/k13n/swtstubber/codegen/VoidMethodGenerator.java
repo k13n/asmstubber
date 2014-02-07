@@ -9,7 +9,7 @@ public class VoidMethodGenerator implements EmptyMethodGenerator {
   public void generate(MethodVisitor visitor) {
     visitor.visitCode();
     visitor.visitInsn(Opcodes.RETURN);
-    visitor.visitMaxs(1, 1);
+    visitor.visitMaxs(-1, -1);
     visitor.visitEnd();
   }
 

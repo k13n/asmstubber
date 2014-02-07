@@ -10,7 +10,7 @@ public class IntegerMethodGenerator implements EmptyMethodGenerator {
     visitor.visitCode();
     visitor.visitInsn(Opcodes.ICONST_0);
     visitor.visitInsn(Opcodes.IRETURN);
-    visitor.visitMaxs(1, 1);
+    visitor.visitMaxs(-1, -1);
     visitor.visitEnd();
   }
 

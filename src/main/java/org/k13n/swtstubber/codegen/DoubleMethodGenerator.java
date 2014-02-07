@@ -11,7 +11,7 @@ public class DoubleMethodGenerator implements EmptyMethodGenerator {
     visitor.visitCode();
     visitor.visitInsn(Opcodes.DCONST_0);
     visitor.visitInsn(Opcodes.DRETURN);
-    visitor.visitMaxs(1, 1);
+    visitor.visitMaxs(-1, -1);
     visitor.visitEnd();
   }
 

@@ -26,6 +26,11 @@ public class ConstructorVisitor extends MethodVisitor {
   }
 
   @Override
+  public void visitMaxs(int maxStack, int maxLocals) {
+    super.visitMaxs(-1, -1);
+  }
+
+  @Override
   public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
     if (!hasCallToSuperAppeared)
       return super.visitAnnotation(desc, visible);
@@ -131,12 +136,6 @@ public class ConstructorVisitor extends MethodVisitor {
   public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
     if (!hasCallToSuperAppeared)
       super.visitLookupSwitchInsn(dflt, keys, labels);
-  }
-
-  @Override
-  public void visitMaxs(int maxStack, int maxLocals) {
-    if (!hasCallToSuperAppeared)
-      super.visitMaxs(maxStack, maxLocals);
   }
 
   @Override

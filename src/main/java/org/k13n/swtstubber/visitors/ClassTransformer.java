@@ -30,7 +30,7 @@ public class ClassTransformer {
   }
 
   private byte[] transformBytecode(byte[] bytecode) {
-    ClassWriter writer = new ClassWriter(0);
+    ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
     SwtClassVisitor visitor = new SwtClassVisitor(writer);
     ClassReader reader = new ClassReader(bytecode);
     reader.accept(visitor, 0);
