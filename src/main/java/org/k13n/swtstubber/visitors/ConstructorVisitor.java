@@ -31,6 +31,13 @@ public class ConstructorVisitor extends MethodVisitor {
   }
 
   @Override
+  public void visitInsn(int opcode) {
+    // let RETURN statement propagate
+    if (opcode == Opcodes.RETURN || !hasCallToSuperAppeared)
+      super.visitInsn(opcode);
+  }
+
+  @Override
   public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
     if (!hasCallToSuperAppeared)
       return super.visitAnnotation(desc, visible);
