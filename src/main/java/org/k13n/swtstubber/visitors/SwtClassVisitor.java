@@ -1,6 +1,7 @@
 package org.k13n.swtstubber.visitors;
 
 import org.k13n.swtstubber.codegen.EmptyMethodFactory;
+import org.k13n.swtstubber.codegen.EmptyMethodGenerator;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -16,18 +17,14 @@ public class SwtClassVisitor extends ClassVisitor {
   @Override
   public MethodVisitor visitMethod(int access, String name, String desc,
       String signature, String[] exceptions) {
-    if (isAbstractMethod(access)) {
-      super.visitMethod(access, name, desc, signature, exceptions);
-      return null;
-    }
     MethodVisitor methodVisitor = visitor.visitMethod(access, name, desc,
         signature, exceptions);
-    if (isConstructor(name)) {
-      return new ConstructorVisitor(methodVisitor);
-    } else {
-      EmptyMethodFactory.createMethod(desc).generate(methodVisitor);
+    if (isAbstractMethod(access))
       return null;
-    }
+    else if (isConstructor(name))
+      return new ConstructorVisitor(methodVisitor);
+    else
+      return handleNormalMethod(desc, methodVisitor);
   }
 
   private boolean isAbstractMethod(int access) {
@@ -37,5 +34,13 @@ public class SwtClassVisitor extends ClassVisitor {
   private boolean isConstructor(String name) {
     return name.equals("<init>");
   }
+
+  private MethodVisitor handleNormalMethod(String desc,
+      MethodVisitor methodVisitor) {
+    EmptyMethodGenerator generator = EmptyMethodFactory.createMethod(desc);
+    generator.generate(methodVisitor);
+    return null;
+  }
+
 
 }
