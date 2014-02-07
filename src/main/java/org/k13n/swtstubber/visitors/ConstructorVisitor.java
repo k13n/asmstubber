@@ -58,18 +58,6 @@ public class ConstructorVisitor extends MethodVisitor {
   }
 
   @Override
-  public void visitCode() {
-    if (!hasCallToSuperAppeared)
-      super.visitCode();
-  }
-
-  @Override
-  public void visitEnd() {
-    if (!hasCallToSuperAppeared)
-      super.visitEnd();
-  }
-
-  @Override
   public void visitFieldInsn(int opcode, String owner, String name,
       String desc) {
     if (!hasCallToSuperAppeared)
