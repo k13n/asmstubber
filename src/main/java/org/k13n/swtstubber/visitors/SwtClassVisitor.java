@@ -16,14 +16,26 @@ public class SwtClassVisitor extends ClassVisitor {
   @Override
   public MethodVisitor visitMethod(int access, String name, String desc,
       String signature, String[] exceptions) {
+    if (isAbstractMethod(access)) {
+      super.visitMethod(access, name, desc, signature, exceptions);
+      return null;
+    }
     MethodVisitor methodVisitor = visitor.visitMethod(access, name, desc,
         signature, exceptions);
-    if (name.equals("<init>")) {
+    if (isConstructor(name)) {
       return new ConstructorVisitor(methodVisitor);
     } else {
       EmptyMethodFactory.createMethod(desc).generate(methodVisitor);
       return null;
     }
+  }
+
+  private boolean isAbstractMethod(int access) {
+    return (access & Opcodes.ACC_ABSTRACT) != 0;
+  }
+
+  private boolean isConstructor(String name) {
+    return name.equals("<init>");
   }
 
 }
