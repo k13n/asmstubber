@@ -83,12 +83,6 @@ public class ConstructorVisitor extends MethodVisitor {
   }
 
   @Override
-  public void visitInsn(int opcode) {
-    if (!hasCallToSuperAppeared)
-      super.visitInsn(opcode);
-  }
-
-  @Override
   public void visitIntInsn(int opcode, int operand) {
     if (!hasCallToSuperAppeared)
       super.visitIntInsn(opcode, operand);
