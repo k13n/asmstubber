@@ -10,7 +10,7 @@ public class LongMethodGenerator implements EmptyMethodGenerator {
     visitor.visitCode();
     visitor.visitInsn(Opcodes.LCONST_0);
     visitor.visitInsn(Opcodes.LRETURN);
-    visitor.visitMaxs(1, 1);
+    visitor.visitMaxs(-1, -1);
     visitor.visitEnd();
   }
 

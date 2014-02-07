@@ -10,7 +10,7 @@ public class FloatMethodGenerator implements EmptyMethodGenerator {
     visitor.visitCode();
     visitor.visitInsn(Opcodes.FCONST_0);
     visitor.visitInsn(Opcodes.FRETURN);
-    visitor.visitMaxs(1, 1);
+    visitor.visitMaxs(-1, -1);
     visitor.visitEnd();
   }
 

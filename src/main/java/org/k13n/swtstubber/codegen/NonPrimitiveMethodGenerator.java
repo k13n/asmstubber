@@ -10,7 +10,7 @@ public class NonPrimitiveMethodGenerator implements EmptyMethodGenerator {
     visitor.visitCode();
     visitor.visitInsn(Opcodes.ACONST_NULL);
     visitor.visitInsn(Opcodes.ARETURN);
-    visitor.visitMaxs(1, 1);
+    visitor.visitMaxs(-1, -1);
     visitor.visitEnd();
   }
 
