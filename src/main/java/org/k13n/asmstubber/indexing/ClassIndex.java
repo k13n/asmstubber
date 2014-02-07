@@ -1,4 +1,4 @@
-package org.k13n.swtstubber.indexing;
+package org.k13n.asmstubber.indexing;
 
 import java.util.HashMap;
 import java.util.Map;

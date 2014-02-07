@@ -1,11 +1,11 @@
-package org.k13n.swtstubber;
+package org.k13n.asmstubber;
 
 import java.io.IOException;
 
-import org.k13n.swtstubber.indexing.ClassIndex;
-import org.k13n.swtstubber.indexing.ClassIndexer;
-import org.k13n.swtstubber.util.FileUtil;
-import org.k13n.swtstubber.visitors.ClassTransformer;
+import org.k13n.asmstubber.indexing.ClassIndex;
+import org.k13n.asmstubber.indexing.ClassIndexer;
+import org.k13n.asmstubber.util.FileUtil;
+import org.k13n.asmstubber.visitors.ClassTransformer;
 
 public class App {
 

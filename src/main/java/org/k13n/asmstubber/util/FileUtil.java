@@ -1,4 +1,4 @@
-package org.k13n.swtstubber.util;
+package org.k13n.asmstubber.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

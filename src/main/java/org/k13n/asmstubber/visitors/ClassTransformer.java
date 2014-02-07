@@ -1,6 +1,6 @@
-package org.k13n.swtstubber.visitors;
+package org.k13n.asmstubber.visitors;
 
-import org.k13n.swtstubber.indexing.ClassIndex;
+import org.k13n.asmstubber.indexing.ClassIndex;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;

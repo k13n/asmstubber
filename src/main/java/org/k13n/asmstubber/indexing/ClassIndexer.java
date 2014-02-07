@@ -1,4 +1,4 @@
-package org.k13n.swtstubber.indexing;
+package org.k13n.asmstubber.indexing;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.k13n.swtstubber.util.FileUtil;
+import org.k13n.asmstubber.util.FileUtil;
 import org.objectweb.asm.ClassReader;
 
 public class ClassIndexer {

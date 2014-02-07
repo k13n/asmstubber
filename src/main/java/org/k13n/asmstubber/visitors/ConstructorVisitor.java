@@ -1,6 +1,6 @@
-package org.k13n.swtstubber.visitors;
+package org.k13n.asmstubber.visitors;
 
-import org.k13n.swtstubber.codegen.ConstructorGenerator;
+import org.k13n.asmstubber.codegen.ConstructorGenerator;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 

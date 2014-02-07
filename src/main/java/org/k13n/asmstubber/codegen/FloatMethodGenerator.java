@@ -1,17 +1,18 @@
-package org.k13n.swtstubber.codegen;
+package org.k13n.asmstubber.codegen;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class LongMethodGenerator implements EmptyMethodGenerator {
+public class FloatMethodGenerator implements EmptyMethodGenerator {
 
   @Override
   public void generate(MethodVisitor visitor) {
     visitor.visitCode();
-    visitor.visitInsn(Opcodes.LCONST_0);
-    visitor.visitInsn(Opcodes.LRETURN);
+    visitor.visitInsn(Opcodes.FCONST_0);
+    visitor.visitInsn(Opcodes.FRETURN);
     visitor.visitMaxs(-1, -1);
     visitor.visitEnd();
   }
 
 }
+

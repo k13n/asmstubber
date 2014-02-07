@@ -1,4 +1,4 @@
-package org.k13n.swtstubber.codegen;
+package org.k13n.asmstubber.codegen;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
