@@ -6,10 +6,10 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class SwtClassVisitor extends ClassVisitor {
+public class TransformingClassVisitor extends ClassVisitor {
   private final ClassVisitor visitor;
 
-  public SwtClassVisitor(ClassVisitor visitor) {
+  public TransformingClassVisitor(ClassVisitor visitor) {
     super(Opcodes.ASM4, visitor);
     this.visitor = visitor;
   }

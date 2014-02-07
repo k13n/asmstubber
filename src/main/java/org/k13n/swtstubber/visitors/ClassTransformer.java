@@ -2,6 +2,7 @@ package org.k13n.swtstubber.visitors;
 
 import org.k13n.swtstubber.indexing.ClassIndex;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
 public class ClassTransformer {
@@ -31,7 +32,7 @@ public class ClassTransformer {
 
   private byte[] transformBytecode(byte[] bytecode) {
     ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-    SwtClassVisitor visitor = new SwtClassVisitor(writer);
+    ClassVisitor visitor = new TransformingClassVisitor(writer);
     ClassReader reader = new ClassReader(bytecode);
     reader.accept(visitor, 0);
     return writer.toByteArray();
