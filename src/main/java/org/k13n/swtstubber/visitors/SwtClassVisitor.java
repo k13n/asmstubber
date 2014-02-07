@@ -9,17 +9,21 @@ public class SwtClassVisitor extends ClassVisitor {
   private final ClassVisitor visitor;
 
   public SwtClassVisitor(ClassVisitor visitor) {
-    super(Opcodes.ASM4);
+    super(Opcodes.ASM4, visitor);
     this.visitor = visitor;
   }
 
   @Override
   public MethodVisitor visitMethod(int access, String name, String desc,
       String signature, String[] exceptions) {
-    MethodVisitor method = visitor.visitMethod(access, name, desc,
+    MethodVisitor methodVisitor = visitor.visitMethod(access, name, desc,
         signature, exceptions);
-    EmptyMethodFactory.createMethod(desc).generate(method);
-    return null;
+    if (name.equals("<init>")) {
+      return new ConstructorVisitor(methodVisitor);
+    } else {
+      EmptyMethodFactory.createMethod(desc).generate(methodVisitor);
+      return null;
+    }
   }
 
 }
