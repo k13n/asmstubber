@@ -8,15 +8,18 @@ import org.k13n.asmstubber.util.FileUtil;
 import org.k13n.asmstubber.visitors.ClassTransformer;
 
 public class App {
+  private final String inputPath;
+  private final String targetDirectory;
 
-  public static void main(String[] args) {
+  private App(String inputPath, String targetDirectory) {
+    this.inputPath = inputPath;
+    this.targetDirectory = targetDirectory;
+  }
+
+  public void execute() {
     ClassIndex index = new ClassIndex();
     ClassIndexer indexer = new ClassIndexer(index);
-
-    indexer.index("/path/to/swt/jar/file");
-    System.out.printf("Indexed classes: %d%n", index.keys().size());
-
-    final String targetDirectory = "/path/to/store/the/transformed/class/files";
+    indexer.index(inputPath);
 
     ClassTransformer.Callback cb = new ClassTransformer.Callback() {
       @Override public void accept(String className, byte[] bytecode) {
@@ -28,6 +31,21 @@ public class App {
       }
     };
     new ClassTransformer(index, cb).transform();
+  }
+
+  public static void main(String[] args) {
+    if (args.length < 2) {
+      printUsage();
+      System.exit(1);
+    }
+    new App(args[0], args[1]).execute();
+  }
+
+  private static void printUsage() {
+    System.out.println("Two arguments are required, the parameters are:");
+    System.out.println("  <input path> <target directory>");
+    System.out.println("The input path can be either a single class file, " +
+        "a directory or a jar file");
   }
 
 }
