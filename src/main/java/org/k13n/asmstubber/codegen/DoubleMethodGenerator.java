@@ -1,18 +1,11 @@
-
 package org.k13n.asmstubber.codegen;
 
-import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class DoubleMethodGenerator implements EmptyMethodGenerator {
+public class DoubleMethodGenerator extends DefaultValueMethodGenerator {
 
-  @Override
-  public void generate(MethodVisitor visitor) {
-    visitor.visitCode();
-    visitor.visitInsn(Opcodes.DCONST_0);
-    visitor.visitInsn(Opcodes.DRETURN);
-    visitor.visitMaxs(-1, -1);
-    visitor.visitEnd();
+  public DoubleMethodGenerator() {
+    super(Opcodes.DCONST_0, Opcodes.DRETURN);
   }
 
 }
