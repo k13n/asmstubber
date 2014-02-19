@@ -35,7 +35,6 @@ Maven to build and package the code with the following commands:
 
 ```shell
 mvn package
-
 ```
 
 Then, executing the application is simple:
